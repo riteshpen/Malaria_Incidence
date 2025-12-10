@@ -2,6 +2,22 @@
 
 <img width="304" height="333" alt="Image" src="https://github.com/user-attachments/assets/b8c55108-c866-4531-8309-f590bc4155e2" />
 
+Child mortality is a major global health issue, with malaria as one of the leading preventable causes of death for children under five. 
+Preventive measures, such as insecticide-treated bed nets (ITNs) and indoor residual spraying (IRS), are promoted by global organizations like UNICEF and WHO. 
+This project examines whether more access to these measures correlates with lower child mortality across countries. 
+Additionally, we aim to examine changes in malaria-related cases over time to determine whether the prevalence of malaria is decreasing, stable, or showing spikes in recent years.
+
+### What datasets did we use?
+
+1. UNICEF Malaria & Child Health Dataset (https://data.unicef.org/resources/dataset/malaria/)
+2. World Bank Under-5 Mortality Data (https://data.worldbank.org/indicator/SH.DYN.MORT?)
+3. World Bank Incidence of Malaria (https://data.worldbank.org/indicator/SH.MLR.INCD.P3?name_desc=true)
+
+### What is df_latest_by_country.csv, and how did we get it? 
+
+1. df_latest_by_country.csv is the file we used for our final evaluation and analysis. 
+2. We merged both datasets and selected the most recent data entry for every country. 
+3. After doing that, we got the df_latest_by_country.csv file. 
 
 ## Table of Contents
 
