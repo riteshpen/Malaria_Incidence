@@ -72,22 +72,36 @@ We hypothesize that higher access to prevention measures is associated with lowe
 - Subgroup fairness evaluation using Brier Scores
 
 ## Analysis
+
 - Calculated correlation between ITN coverage and child mortality: r = 0.13 (Weak Positive).
 - 63 countries analyzed, spanning multiple regions and income groups.
 - The highest child mortality rate is 278.2 (South Sudan), lowest is 8.3 (Sri Lanka).
 - Average coverage for the poorest quintile is 39.8%, slightly higher than the richest quintile's 39.0%.
 - The highest overall coverage is 93.6% (Guinea-Bissau), 95.5% (Niger), and 79.1% (Mali).
 - The lowest overall coverage is 0.4% (Pakistan), 1% (Tajikistan), and 1% (Azerbaijan).
+- The biggest gaps favoring the rich are 38.0% (Central African Republic), 34.5% (Congo, Dem. Rep.), and 30.7% (Burundi).
+- The biggest gaps favoring the poor are -50.8% (Vanuatu), -44.6% (Lao PDR), and -43.3% (Kiribati).
+
+
+- The overall accuracy is 82%.
+- The overall Brier Score is 0.176.
+- The ITN coverage importance is 42%.
 
 ## Interpretation:
 
-- ITN coverage did not significantly reduce child mortality in the available dataset
+The statistical evidence suggests that increased ITN (insecticide-treated net) coverage does not have a strong or direct relationship with reducing child mortality across the 63 countries analyzed. The correlation between ITN coverage and child mortality is weak (r = 0.13) and not statistically significant (p = 0.32), meaning the data do not support a meaningful linear relationship.
 
-- Poorest and Richest households showed similar ITN coverage levels
+Despite this, the Random Forest model assigns 42% importance to ITN coverage, indicating that ITN usage helps the model differentiate outcomes, but this does not imply causation. Instead, the weak real-world correlation suggests many other socioeconomic variables—such as poverty, infrastructure, healthcare access, conflict, and regional conditions—have a stronger influence on child mortality than ITN coverage alone.
 
-- 63 countries 
+The descriptive statistics reinforce this complexity:
 
-- Removed original claim that ITNs are “the most effective” intervention because no comparison was made with other prevention methods
+Child mortality ranges widely (from 8.3 in Sri Lanka to 278.2 in South Sudan).
+
+ITN coverage varies dramatically by country, with some extreme wealth gaps both favoring the rich and the poor.
+
+Overall accuracy (82%) and a Brier Score of 0.176 indicate the model performs reasonably well but still reflects significant uncertainty.
+
+Overall, these results imply that prevention measures like ITN distribution cannot independently drive reductions in child mortality. The relationship is multifactorial, and effective policy interventions must account for the broader social and economic environment influencing health outcomes.
 
 
 ## Interactive Dashboard
