@@ -1,0 +1,64 @@
+Country Name,Country Code,Year,Child_Mortality_Rate,ITN_Coverage,ITN_Poorest,ITN_Richest,Wealth_Gap,Region,IncomeGroup
+Afghanistan,AFG,2015,72.4,4.6,1.1,6.5,5.4,"Middle East, North Africa, Afghanistan & Pakistan",Low income
+Angola,AGO,2016,84.1,21.7,16.8,22.0,5.199999999999999,Sub-Saharan Africa,Lower middle income
+Azerbaijan,AZE,2000,74.0,1.0,2.0,1.0,-1.0,Europe & Central Asia,Upper middle income
+Burundi,BDI,2017,61.5,39.9,25.0,55.7,30.700000000000003,Sub-Saharan Africa,Low income
+Benin,BEN,2018,90.5,69.8,62.1,73.9,11.800000000000004,Sub-Saharan Africa,Lower middle income
+Burkina Faso,BFA,2018,91.2,54.4,48.4,57.0,8.600000000000001,Sub-Saharan Africa,Low income
+Botswana,BWA,2012,53.4,30.9,28.9,28.8,-0.0999999999999978,Sub-Saharan Africa,Upper middle income
+Central African Republic,CAF,2019,243.1,50.6,36.9,74.9,38.00000000000001,Sub-Saharan Africa,Low income
+Cote d'Ivoire,CIV,2016,83.6,59.7,71.9,33.7,-38.2,Sub-Saharan Africa,Lower middle income
+Cameroon,CMR,2018,79.7,59.8,67.3,59.7,-7.599999999999994,Sub-Saharan Africa,Lower middle income
+"Congo, Dem. Rep.",COD,2018,86.3,51.0,34.9,69.4,34.50000000000001,Sub-Saharan Africa,Low income
+"Congo, Rep.",COG,2015,52.7,60.5,66.0,50.1,-15.9,Sub-Saharan Africa,Lower middle income
+Comoros,COM,2012,52.1,41.1,36.3,41.7,5.400000000000006,Sub-Saharan Africa,Lower middle income
+Djibouti,DJI,2009,78.1,19.9,23.3,6.2,-17.1,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income
+Eritrea,ERI,2010,55.0,20.4,17.9,13.5,-4.399999999999999,Sub-Saharan Africa,Low income
+Ethiopia,ETH,2015,64.9,45.3,30.5,53.8,23.3,Sub-Saharan Africa,Lower middle income
+Gabon,GAB,2012,49.4,38.8,40.7,23.6,-17.1,Sub-Saharan Africa,Upper middle income
+Ghana,GHA,2019,43.9,54.1,68.6,30.1,-38.49999999999999,Sub-Saharan Africa,Lower middle income
+Guinea,GIN,2021,100.5,38.2,34.8,33.0,2.0,Sub-Saharan Africa,Lower middle income
+"Gambia, The",GMB,2020,48.9,44.0,54.9,30.6,-24.3,Sub-Saharan Africa,Low income
+Guinea-Bissau,GNB,2019,79.1,93.6,95.0,92.1,-2.9000000000000057,Sub-Saharan Africa,Low income
+Equatorial Guinea,GNQ,2011,107.1,23.0,22.4,25.9,3.5,Sub-Saharan Africa,Upper middle income
+Guyana,GUY,2020,28.4,11.2,26.3,2.9,-23.4,Latin America & Caribbean,High income
+Haiti,HTI,2017,66.1,18.2,9.7,26.3,16.6,Latin America & Caribbean,Lower middle income
+Indonesia,IDN,2007,38.0,3.0,6.0,1.0,-5.0,East Asia & Pacific,Upper middle income
+India,IND,2021,30.6,4.4,6.8,2.0,-4.8,South Asia,Lower middle income
+Kenya,KEN,2020,42.8,42.0,31.6,45.3,13.699999999999996,Sub-Saharan Africa,Lower middle income
+Cambodia,KHM,2006,59.8,4.2,7.6,0.9,-6.699999999999999,East Asia & Pacific,Lower middle income
+Kiribati,KIR,2019,59.3,69.2,90.9,47.6,-43.3,East Asia & Pacific,Lower middle income
+Lao PDR,LAO,2017,48.8,49.8,65.4,20.8,-44.60000000000001,East Asia & Pacific,Lower middle income
+Liberia,LBR,2020,79.7,44.3,41.2,35.6,-5.600000000000001,Sub-Saharan Africa,Low income
+Sri Lanka,LKA,2016,8.3,3.5,4.8,0.8,-4.0,South Asia,Lower middle income
+Madagascar,MDG,2018,65.8,62.3,64.6,55.5,-9.099999999999994,Sub-Saharan Africa,Low income
+Mali,MLI,2018,106.1,79.1,82.8,68.2,-14.599999999999994,Sub-Saharan Africa,Low income
+Myanmar,MMR,2016,49.5,18.6,23.8,10.1,-13.7,East Asia & Pacific,Lower middle income
+Mozambique,MOZ,2018,69.5,72.7,71.6,65.8,-5.799999999999997,Sub-Saharan Africa,Low income
+Mauritania,MRT,2015,48.9,32.1,39.6,29.1,-10.5,Sub-Saharan Africa,Lower middle income
+Malawi,MWI,2020,43.1,67.9,64.1,70.3,6.200000000000003,Sub-Saharan Africa,Low income
+Namibia,NAM,2013,54.0,5.6,7.2,3.5,-3.7,Sub-Saharan Africa,Lower middle income
+Niger,NER,2015,126.3,95.5,34.8,33.0,2.0,Sub-Saharan Africa,Low income
+Nigeria,NGA,2018,120.2,52.2,59.9,39.6,-20.3,Sub-Saharan Africa,Lower middle income
+Pakistan,PAK,2018,68.8,0.4,1.2,33.0,2.0,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income
+Papua New Guinea,PNG,2018,47.2,51.5,40.5,40.1,-0.3999999999999986,East Asia & Pacific,Lower middle income
+Rwanda,RWA,2020,42.5,55.5,36.4,73.2,36.8,Sub-Saharan Africa,Low income
+Sudan,SDN,2006,84.0,30.0,34.8,33.0,2.0,Sub-Saharan Africa,Low income
+Senegal,SEN,2021,42.5,46.4,34.8,33.0,2.0,Sub-Saharan Africa,Lower middle income
+Solomon Islands,SLB,2015,24.9,69.6,69.2,57.9,-11.300000000000004,East Asia & Pacific,Lower middle income
+Sierra Leone,SLE,2019,109.1,59.1,59.0,46.3,-12.700000000000005,Sub-Saharan Africa,Low income
+Somalia,SOM,2006,171.5,11.4,2.4,16.5,14.1,Sub-Saharan Africa,Low income
+South Sudan,SSD,2017,278.2,41.7,39.2,50.2,11.0,Sub-Saharan Africa,Low income
+Sao Tome and Principe,STP,2019,17.0,62.6,60.1,62.5,2.3999999999999986,Sub-Saharan Africa,Lower middle income
+Suriname,SUR,2010,23.2,43.4,43.1,33.0,2.0,Latin America & Caribbean,Upper middle income
+Eswatini,SWZ,2010,81.8,1.5,2.6,1.4,-1.2000000000000002,Sub-Saharan Africa,Lower middle income
+Chad,TCD,2019,114.6,54.3,44.7,57.3,12.599999999999994,Sub-Saharan Africa,Low income
+Togo,TGO,2017,70.9,60.7,60.0,52.4,-7.600000000000001,Sub-Saharan Africa,Low income
+Tajikistan,TJK,2005,52.2,1.0,2.0,1.0,-1.0,Europe & Central Asia,Lower middle income
+Timor-Leste,TLS,2016,59.1,55.4,49.2,43.9,-5.300000000000004,East Asia & Pacific,Lower middle income
+Tanzania,TZA,2017,50.2,54.6,39.9,64.1,24.2,Sub-Saharan Africa,Lower middle income
+Uganda,UGA,2018,47.4,60.3,56.0,62.7,6.700000000000003,Sub-Saharan Africa,Low income
+Viet Nam,VNM,2011,22.8,9.4,15.9,5.1,-10.8,East Asia & Pacific,Lower middle income
+Vanuatu,VUT,2013,19.4,51.0,67.9,17.1,-50.8,East Asia & Pacific,Lower middle income
+Zambia,ZMB,2019,54.1,51.6,55.2,47.9,-7.300000000000004,Sub-Saharan Africa,Lower middle income
+Zimbabwe,ZWE,2019,51.1,14.9,14.9,9.7,-5.200000000000001,Sub-Saharan Africa,Lower middle income
