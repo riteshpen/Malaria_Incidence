@@ -1,8 +1,5 @@
-*The Impact of Malaria Prevention Measures on Child Mortality* 
+**The Impact of Malaria Prevention Measures on Child Mortality**
 
-
-Group 30
-Date: 12/04/2025
 
 Table of Contents
 
@@ -26,14 +23,17 @@ License
 
 Group Members
 Name	UT EID	Email
+
 Ritesh Penumatsa	rp37458	rp37458@utexas.edu
 
 Lucy Schilling	lms5598	lucy.schilling@utexas.edu
 
 Xinrui Song	xs3979	suszanee@utexas.edu
+
 Project Overview
 
 This project investigates the relationship between Insecticide-Treated Nets (ITNs) and child mortality rates across countries of varying income levels and regions.
+
 We focused on:
 
 Data cleaning and quality assurance
