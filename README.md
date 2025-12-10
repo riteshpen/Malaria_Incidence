@@ -55,7 +55,7 @@ This project investigates the relationship between Insecticide-Treated Nets (ITN
 2. We merged both datasets and selected the most recent data entry for every country. 
 3. After doing that, we got the df_latest_by_country.csv file. 
 
-## We focused on:
+## What we focused on:
 
 - Data cleaning and quality assurance
 
