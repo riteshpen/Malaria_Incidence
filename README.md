@@ -15,7 +15,7 @@ Additionally, we aim to examine changes in malaria-related cases over time to de
 
 ### What is df_latest_by_country.csv, and how did we get it? 
 
-1. df_latest_by_country.csv is the file we used for our final evaluation and analysis. 
+1. df_latest_by_country.csv is the dataset we used for our final evaluation, analysis, and dashboard.
 2. We merged both datasets and selected the most recent data entry for every country. 
 3. After doing that, we got the df_latest_by_country.csv file. 
 
