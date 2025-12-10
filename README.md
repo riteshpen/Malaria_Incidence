@@ -108,7 +108,7 @@ To view the dashboard, download the file: malaria_dashboard.html and open it up
 
 Below are selected key visuals extracted from the analysis.
 
-### World Mortality Map
+### World Mortality Map (Folium)
 
 <img width="490" height="372" alt="Image" src="https://github.com/user-attachments/assets/d3138ec8-23a7-4844-ad81-5913f774da00" />
 
