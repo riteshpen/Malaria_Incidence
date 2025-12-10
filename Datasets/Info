@@ -5,4 +5,10 @@ Additionally, we aim to examine changes in malaria-related cases over time to de
 
 1. UNICEF Malaria & Child Health Dataset (https://data.unicef.org/resources/dataset/malaria/)
 2. World Bank Under-5 Mortality Data (https://data.worldbank.org/indicator/SH.DYN.MORT?)
-3. World Bank Incidence of Malaria (https://data.worldbank.org/indicator/SH.MLR.INCD.P3?name_desc=true) 
+3. World Bank Incidence of Malaria (https://data.worldbank.org/indicator/SH.MLR.INCD.P3?name_desc=true)
+
+---
+
+1. df_latest_by_country.csv is the file we used for our final evaluation and analysis. 
+2. We merged both datasets and selected the most recent data entry for every country. 
+3. After doing that, we got the df_latest_by_country.csv file. 
