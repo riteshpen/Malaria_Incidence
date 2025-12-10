@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaria Prevention & Child Mortality Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            width: 2rem;
+            height: 2rem;
+            color: #4f46e5;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            color: #1f2937;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        nav {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+            padding: 0 2rem;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 1rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            color: #374151;
+            border-bottom-color: #d1d5db;
+        }
+
+        .nav-btn.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .stat-box.blue { background: #dbeafe; }
+        .stat-box.green { background: #dcfce7; }
+        .stat-box.orange { background: #fed7aa; }
+        .stat-box.purple { background: #e9d5ff; }
+        .stat-box.indigo { background: #e0e7ff; }
+
+        .stat-number {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .blue .stat-number { color: #2563eb; }
+        .green .stat-number { color: #16a34a; }
+        .orange .stat-number { color: #ea580c; }
+        .purple .stat-number { color: #9333ea; }
+        .indigo .stat-number { color: #4f46e5; }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .info-box {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-box h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box ul {
+            list-style-position: inside;
+            font-size: 0.875rem;
+            color: #374151;
+            line-height: 1.75;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 1rem;
+        }
+
+        .chart-container-large {
+            position: relative;
+            height: 600px;
+            margin-top: 1rem;
+        }
+
+        .map-container {
+            height: 520px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .insight-box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .insight-box.red { background: #fee2e2; }
+        .insight-box.green { background: #dcfce7; }
+        .insight-box.orange { background: #fed7aa; }
+        .insight-box.blue { background: #dbeafe; }
+
+        .insight-box h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .red h4 { color: #991b1b; }
+        .green h4 { color: #166534; }
+        .orange h4 { color: #9a3412; }
+        .blue h4 { color: #1e40af; }
+
+        .insight-box p {
+            font-size: 0.875rem;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1000px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sidebar {
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        footer {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 3rem;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .muted {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .chart-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .country-details {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            border-left: 4px solid #4f46e5;
+        }
+        
+        .country-details h4 {
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .country-details p {
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #475569;
+        }
+
+        .intro-section {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .intro-section h2 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .intro-section p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+
+        .variable-definitions {
+            margin-top: 2rem;
+        }
+
+        .variable-definitions h3 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .variable-card {
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #4f46e5;
+        }
+
+        .variable-card h4 {
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .variable-card p {
+            color: #475569;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .income-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .income-table th, .income-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .income-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        .income-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <svg class="header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2"/>
+            </svg>
+            <div>
+                <h1>Malaria Prevention & Child Mortality</h1>
+                <p class="subtitle">Interactive Analysis Dashboard</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <button class="nav-btn active" onclick="showTab('overview')">Overview</button>
+            <button class="nav-btn" onclick="showTab('coverage')">ITN Coverage</button>
+            <button class="nav-btn" onclick="showTab('correlation')">Correlations</button>
+            <button class="nav-btn" onclick="showTab('equity')">Health</button>
+            <button class="nav-btn" onclick="showTab('model')">ML Analysis</button>
+            <button class="nav-btn" onclick="showTab('conclusion')">Conclusion</button>
+        </div>
+    </nav>
+
+    <main>
+        <div id="overview" class="tab-content active">
+            <div class="card">
+                <div class="intro-section">
+                    <h2>Introduction & Goal</h2>
+                    <p>Child mortality is a major global health issue, with malaria as one of the leading preventable causes of death for children under five. Preventative measures, such as insecticide-treated bed nets and indoor residual spraying, are being implemented by global organizations to combat this issue.</p>
+                    <p>The goal of our project is to determine precisely how effective these measures are in reducing child mortality rates. We hypothesize that higher access to prevention measures is associated with lower under-five mortality, controlling for socioeconomic factors.</p>
+                </div>
+
+                <div class="variable-definitions">
+                    <h3>Key Variables Explained</h3>
+                    
+                    <div class="variable-card">
+                        <h4>ITN Coverage</h4>
+                        <p>The percentage of the total population that has access to, or sleeps under, an Insecticide-Treated Net (ITN).</p>
+                    </div>
+                    
+                    <div class="variable-card">
+                        <h4>Income Group Classification</h4>
+                        <p>Based on Gross National Income (GNI) per capita, countries are classified into four income groups:</p>
+                        <table class="income-table">
+                            <thead>
+                                <tr>
+                                    <th>Income Group</th>
+                                    <th>GNI per capita range (approx. typical)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Low Income</td>
+                                    <td>≤ $1,135</td>
+                                </tr>
+                                <tr>
+                                    <td>Lower Middle Income</td>
+                                    <td>$1,136 – $4,465</td>
+                                </tr>
+                                <tr>
+                                    <td>Upper Middle Income</td>
+                                    <td>$4,466 – $13,845</td>
+                                </tr>
+                                <tr>
+                                    <td>High Income</td>
+                                    <td>≥ $13,846</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="variable-card">
+                        <h4>ITN_Richest</h4>
+                        <p>The ITN usage (or ownership) among households in the richest wealth quintile (Q5).</p>
+                    </div>
+                    
+                    <div class="variable-card">
+                        <h4>ITN_Poorest</h4>
+                        <p>The ITN usage among individuals in the poorest wealth quintile (Q1).</p>
+                    </div>
+                    
+                    <div class="variable-card">
+                        <h4>Wealth_Gap</h4>
+                        <p>Calculated as ITN_Richest - ITN_Poorest. This measures inequality of ITN access:</p>
+                        <p>High Wealth_Gap → big inequality</p>
+                        <p>Low Wealth_Gap → more equal access</p>
+                        <p>Negative Wealth_Gap (rare) → poorest use nets more than richest</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Interactive World Map</h3>
+                <div class="two-col">
+                    <div>
+                        <div id="map" class="map-container"></div>
+                        <p class="muted">Choropleth: Child Mortality Rate (per 1,000) — palette: YlOrRd</p>
+                    </div>
+                    <div class="sidebar">
+                        <h3 style="margin-top:0;">Selected Country</h3>
+                        <div id="countryInfo" class="muted">Click a country on the map to view details</div>
+                        <div id="countryDetails" class="country-details" style="display: none;">
+                            <h4 id="selectedCountryName"></h4>
+                            <p><strong>Child Mortality:</strong> <span id="selectedMortality"></span></p>
+                            <p><strong>ITN Coverage:</strong> <span id="selectedITN"></span></p>
+                            <p><strong>Wealth Gap:</strong> <span id="selectedWealthGap"></span></p>
+                            <p><strong>Income Group:</strong> <span id="selectedIncome"></span></p>
+                            <p><strong>Region:</strong> <span id="selectedRegion"></span></p>
+                        </div>
+                        <div style="margin-top:12px;">
+                            <h4 style="margin:6px 0 4px 0;">Extreme Cases</h4>
+                            <div class="insight-grid">
+                                <div class="insight-box red">
+                                    <h4>Highest Mortality</h4>
+                                    <p><strong>South Sudan:</strong> 278.2 per 1,000</p>
+                                    <p><strong>Central African Republic:</strong> 243.1 per 1,000</p>
+                                </div>
+                                <div class="insight-box green">
+                                    <h4>Lowest Mortality</h4>
+                                    <p><strong>Sri Lanka:</strong> 8.3 per 1,000</p>
+                                    <p><strong>Sao Tome and Principe:</strong> 17.0 per 1,000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="coverage" class="tab-content">
+            <div class="card">
+                <div class="controls">
+                    <h2>ITN Coverage by Economic Status</h2>
+                    <div class="filter-group">
+                        <label for="coverageFilter">Show:</label>
+                        <select id="coverageFilter" onchange="updateCoverageChart()">
+                            <option value="10">Top 10 by Coverage</option>
+                            <option value="all">All Countries</option>
+                        </select>
+                    </div>
+                </div>
+                <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                    Comparison of insecticide-treated net coverage between poorest and richest quintiles.
+                </p>
+                <div id="coverageChartContainer" class="chart-container">
+                    <canvas id="coverageChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Coverage Insights</h3>
+                <div class="insight-grid">
+                    <div class="insight-box orange">
+                        <h4>Poorest Populations</h4>
+                        <p id="insight-poorest-avg">Average coverage: 39.8%</p>
+                        <p style="margin-top: 0.5rem;">Highest poorest coverage is 95.0% (Guinea-Bissau).</p>
+                    </div>
+                    <div class="insight-box blue">
+                        <h4>Richest Populations</h4>
+                        <p id="insight-richest-avg">Average coverage: 39.0%</p>
+                        <p style="margin-top: 0.5rem;">Interestingly, average coverage for the richest is slightly lower than the poorest in this dataset.</p>
+                    </div>
+                    <div class="insight-box green">
+                        <h4>Highest Overall Coverage</h4>
+                        <p><strong>Guinea-Bissau:</strong> 93.6%</p>
+                        <p><strong>Niger:</strong> 95.5%</p>
+                        <p><strong>Mali:</strong> 79.1%</p>
+                    </div>
+                    <div class="insight-box red">
+                        <h4>Lowest Overall Coverage</h4>
+                        <p><strong>Pakistan:</strong> 0.4%</p>
+                        <p><strong>Azerbaijan:</strong> 1.0%</p>
+                        <p><strong>Tajikistan:</strong> 1.0%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="correlation" class="tab-content">
+            <div class="card">
+                <div class="controls">
+                    <h2>Child Mortality vs ITN Coverage</h2>
+                    <div class="filter-group">
+                        <label for="incomeFilter">Income group:</label>
+                        <select id="incomeFilter" onchange="updateCorrelationChart()">
+                            <option value="all">All</option>
+                            <option value="Low income">Low income</option>
+                            <option value="Lower middle income">Lower middle income</option>
+                            <option value="Upper middle income">Upper middle income</option>
+                            <option value="High income">High income</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="correlationChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Correlation Analysis</h3>
+                <div class="info-box" style="background: #e0e7ff;">
+                    <p style="font-weight: 600; color: #312e81; margin-bottom: 0.5rem;">Calculated Correlation (ITN Coverage vs Mortality): r = <span id="correlation-r">-0.42</span></p>
+                    <p style="font-size: 0.875rem; color: #374151;">
+                        The relationship between ITN coverage and child mortality appears to be weak and slightly positive (r = 0.13).
+                        This suggests that while ITN coverage is important, other socioeconomic factors may play a more significant role
+                        in determining child mortality rates across countries.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="equity" class="tab-content">
+            <div class="card">
+                <div class="controls">
+                    <h2>Wealth Gap Impact on Child Mortality</h2>
+                    <div class="filter-group">
+                        <label for="regionFilter">Region:</label>
+                        <select id="regionFilter" onchange="updateEquityChart()">
+                            <option value="all">All Regions</option>
+                            <option value="Sub-Saharan Africa">Sub-Saharan Africa</option>
+                            <option value="East Asia & Pacific">East Asia & Pacific</option>
+                            <option value="South Asia">South Asia</option>
+                            <option value="Middle East, North Africa, Afghanistan & Pakistan">Middle East & N. Africa</option>
+                            <option value="Europe & Central Asia">Europe & Central Asia</option>
+                            <option value="Latin America & Caribbean">Latin America & Caribbean</option>
+                        </select>
+                    </div>
+                </div>
+                <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                    The 'Wealth Gap' is calculated as ITN Coverage (Richest Quintile) - ITN Coverage (Poorest Quintile). A negative value means the poorest are better covered.
+                </p>
+                <div class="chart-container">
+                    <canvas id="equityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Insights</h3>
+                <div class="insight-grid">
+                    <div class="insight-box red">
+                        <h4>⚠️ Biggest Gaps Favoring Rich</h4>
+                        <p>Central African Republic (38.0%), Congo, Dem. Rep. (34.5%), and Burundi (30.7%) show the largest positive wealth gaps.</p>
+                    </div>
+                    <div class="insight-box green">
+                        <h4>✓ Biggest Gaps Favoring Poor</h4>
+                        <p>Vanuatu (-50.8%), Lao PDR (-44.6%), and Kiribati (-43.3%) show large negative wealth gaps.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="model" class="tab-content">
+            <div class="card">
+                <h2>Machine Learning Model Performance</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Feature Importance</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="featureChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Model Calibration by Income Group</h3>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="calibrationChart"></canvas>
+                        </div>
+                        <p style="text-align: center; font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem;">Lower Brier Score = Better Calibration</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Model Insights</h3>
+                <div class="stats-grid">
+                    <div class="stat-box purple">
+                        <div class="stat-number">82%</div>
+                        <div class="stat-label">Overall Accuracy</div>
+                    </div>
+                    <div class="stat-box indigo">
+                        <div class="stat-number">0.176</div>
+                        <div class="stat-label">Brier Score (Overall)</div>
+                    </div>
+                    <div class="stat-box blue">
+                        <div class="stat-number">42%</div>
+                        <div class="stat-label">ITN Coverage Importance</div>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 1rem;">
+                    <p style="font-size: 0.875rem; color: #374151;">
+                        The Random Forest model handles nonlinear relationships and complex interactions, and generalizes well to unseen data. 
+                        ITN coverage being the most important feature. Model performance is most reliable for low-income countries, suggesting the 
+                        our model is best calibrated for this income group. 
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="conclusion" class="tab-content">
+            <div class="card">
+                <h2>Global Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-box blue">
+                        <div class="stat-number" id="stat-countries">50</div>
+                        <div class="stat-label">Countries Analyzed</div>
+                    </div>
+                    <div class="stat-box green">
+                        <div class="stat-number" id="stat-mortality-avg">65.5</div>
+                        <div class="stat-label">Avg Child Mortality (per 1,000)</div>
+                    </div>
+                    <div class="stat-box orange">
+                        <div class="stat-number" id="stat-coverage-avg">40.5%</div>
+                        <div class="stat-label">Avg ITN Coverage (Overall)</div>
+                    </div>
+                    <div class="stat-box indigo">
+                        <div class="stat-number" id="stat-gap-abs">13.9%</div>
+                        <div class="stat-label">Avg Absolute Wealth Gap Magnitude</div>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <h4>Key Findings</h4>
+                    <ul id="overview-key-findings">
+                        <li>Calculated correlation between ITN coverage and child mortality: <strong>r = 0.13</strong> (Weak Positive).</li>
+                        <li><strong>63</strong> countries analyzed, spanning multiple regions and income groups.</li>
+                        <li>Highest child mortality rate is <strong>278.2</strong> (South Sudan), lowest is <strong>8.3</strong> (Sri Lanka).</li>
+                        <li>Average coverage for the poorest quintile is <strong>39.8%</strong>, slightly higher than the richest quintile's <strong>39.0%</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Research Conclusion</h2>
+                <div class="intro-section">
+                    <p><strong>Our hypothesis that higher ITN coverage reduces child mortality is not strongly supported by the data.</strong> The correlation coefficient (r = 0.13) shows a weak positive relationship, and the p-value (0.32) indicates this correlation is not statistically significant.</p>
+                    
+                    <p>While Random Forest identifies ITN coverage as the most important feature (42%), this doesn't prove causation. The weak correlation suggests that other socioeconomic factors likely play a more significant role in determining child mortality rates.</p>
+                    
+                    <p><strong>Conclusion:</strong> We cannot claim that increased prevention measures alone will reduce child mortality, as the relationship is complex and influenced by multiple confounding factors.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box purple">
+                        <div class="stat-number">0.13</div>
+                        <div class="stat-label">Correlation (r)</div>
+                    </div>
+                    <div class="stat-box indigo">
+                        <div class="stat-number">0.32</div>
+                        <div class="stat-label">P-value</div>
+                    </div>
+                    <div class="stat-box blue">
+                        <div class="stat-number">42%</div>
+                        <div class="stat-label">RF Importance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Data Source: World Health Organization & World Bank | Analysis Dashboard for Malaria Prevention Research</p>
+    </footer>
+
+    <script>
+        // Data from the CSV file
+        const RAW_DATA = [
+            {"Country Name":"Afghanistan","Country Code":"AFG","Year":2015,"Child_Mortality_Rate":72.4,"ITN_Coverage":4.6,"ITN_Poorest":1.1,"ITN_Richest":6.5,"Wealth_Gap":5.4,"Region":"Middle East, North Africa, Afghanistan & Pakistan","IncomeGroup":"Low income"},
+            {"Country Name":"Angola","Country Code":"AGO","Year":2016,"Child_Mortality_Rate":84.1,"ITN_Coverage":21.7,"ITN_Poorest":16.8,"ITN_Richest":22.0,"Wealth_Gap":5.199999999999999,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Azerbaijan","Country Code":"AZE","Year":2000,"Child_Mortality_Rate":74.0,"ITN_Coverage":1.0,"ITN_Poorest":2.0,"ITN_Richest":1.0,"Wealth_Gap":-1.0,"Region":"Europe & Central Asia","IncomeGroup":"Upper middle income"},
+            {"Country Name":"Burundi","Country Code":"BDI","Year":2017,"Child_Mortality_Rate":61.5,"ITN_Coverage":39.9,"ITN_Poorest":25.0,"ITN_Richest":55.7,"Wealth_Gap":30.700000000000003,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Benin","Country Code":"BEN","Year":2018,"Child_Mortality_Rate":90.5,"ITN_Coverage":69.8,"ITN_Poorest":62.1,"ITN_Richest":73.9,"Wealth_Gap":11.800000000000004,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Burkina Faso","Country Code":"BFA","Year":2018,"Child_Mortality_Rate":91.2,"ITN_Coverage":54.4,"ITN_Poorest":48.4,"ITN_Richest":57.0,"Wealth_Gap":8.600000000000001,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Botswana","Country Code":"BWA","Year":2012,"Child_Mortality_Rate":53.4,"ITN_Coverage":30.9,"ITN_Poorest":28.9,"ITN_Richest":28.8,"Wealth_Gap":-0.0999999999999978,"Region":"Sub-Saharan Africa","IncomeGroup":"Upper middle income"},
+            {"Country Name":"Central African Republic","Country Code":"CAF","Year":2019,"Child_Mortality_Rate":243.1,"ITN_Coverage":50.6,"ITN_Poorest":36.9,"ITN_Richest":74.9,"Wealth_Gap":38.00000000000001,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Cote d'Ivoire","Country Code":"CIV","Year":2016,"Child_Mortality_Rate":83.6,"ITN_Coverage":59.7,"ITN_Poorest":71.9,"ITN_Richest":33.7,"Wealth_Gap":-38.2,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Cameroon","Country Code":"CMR","Year":2018,"Child_Mortality_Rate":79.7,"ITN_Coverage":59.8,"ITN_Poorest":67.3,"ITN_Richest":59.7,"Wealth_Gap":-7.599999999999994,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Congo, Dem. Rep.","Country Code":"COD","Year":2018,"Child_Mortality_Rate":86.3,"ITN_Coverage":51.0,"ITN_Poorest":34.9,"ITN_Richest":69.4,"Wealth_Gap":34.50000000000001,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Congo, Rep.","Country Code":"COG","Year":2015,"Child_Mortality_Rate":52.7,"ITN_Coverage":60.5,"ITN_Poorest":66.0,"ITN_Richest":50.1,"Wealth_Gap":-15.9,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Comoros","Country Code":"COM","Year":2012,"Child_Mortality_Rate":52.1,"ITN_Coverage":41.1,"ITN_Poorest":36.3,"ITN_Richest":41.7,"Wealth_Gap":5.400000000000006,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Djibouti","Country Code":"DJI","Year":2009,"Child_Mortality_Rate":78.1,"ITN_Coverage":19.9,"ITN_Poorest":23.3,"ITN_Richest":6.2,"Wealth_Gap":-17.1,"Region":"Middle East, North Africa, Afghanistan & Pakistan","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Eritrea","Country Code":"ERI","Year":2010,"Child_Mortality_Rate":55.0,"ITN_Coverage":20.4,"ITN_Poorest":17.9,"ITN_Richest":13.5,"Wealth_Gap":-4.399999999999999,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Ethiopia","Country Code":"ETH","Year":2015,"Child_Mortality_Rate":64.9,"ITN_Coverage":45.3,"ITN_Poorest":30.5,"ITN_Richest":53.8,"Wealth_Gap":23.3,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Gabon","Country Code":"GAB","Year":2012,"Child_Mortality_Rate":49.4,"ITN_Coverage":38.8,"ITN_Poorest":40.7,"ITN_Richest":23.6,"Wealth_Gap":-17.1,"Region":"Sub-Saharan Africa","IncomeGroup":"Upper middle income"},
+            {"Country Name":"Ghana","Country Code":"GHA","Year":2019,"Child_Mortality_Rate":43.9,"ITN_Coverage":54.1,"ITN_Poorest":68.6,"ITN_Richest":30.1,"Wealth_Gap":-38.49999999999999,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Guinea","Country Code":"GIN","Year":2021,"Child_Mortality_Rate":100.5,"ITN_Coverage":38.2,"ITN_Poorest":34.8,"ITN_Richest":33.0,"Wealth_Gap":2.0,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Gambia, The","Country Code":"GMB","Year":2020,"Child_Mortality_Rate":48.9,"ITN_Coverage":44.0,"ITN_Poorest":54.9,"ITN_Richest":30.6,"Wealth_Gap":-24.3,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Guinea-Bissau","Country Code":"GNB","Year":2019,"Child_Mortality_Rate":79.1,"ITN_Coverage":93.6,"ITN_Poorest":95.0,"ITN_Richest":92.1,"Wealth_Gap":-2.9000000000000057,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Equatorial Guinea","Country Code":"GNQ","Year":2011,"Child_Mortality_Rate":107.1,"ITN_Coverage":23.0,"ITN_Poorest":22.4,"ITN_Richest":25.9,"Wealth_Gap":3.5,"Region":"Sub-Saharan Africa","IncomeGroup":"Upper middle income"},
+            {"Country Name":"Guyana","Country Code":"GUY","Year":2020,"Child_Mortality_Rate":28.4,"ITN_Coverage":11.2,"ITN_Poorest":26.3,"ITN_Richest":2.9,"Wealth_Gap":-23.4,"Region":"Latin America & Caribbean","IncomeGroup":"High income"},
+            {"Country Name":"Haiti","Country Code":"HTI","Year":2017,"Child_Mortality_Rate":66.1,"ITN_Coverage":18.2,"ITN_Poorest":9.7,"ITN_Richest":26.3,"Wealth_Gap":16.6,"Region":"Latin America & Caribbean","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Indonesia","Country Code":"IDN","Year":2007,"Child_Mortality_Rate":38.0,"ITN_Coverage":3.0,"ITN_Poorest":6.0,"ITN_Richest":1.0,"Wealth_Gap":-5.0,"Region":"East Asia & Pacific","IncomeGroup":"Upper middle income"},
+            {"Country Name":"India","Country Code":"IND","Year":2021,"Child_Mortality_Rate":30.6,"ITN_Coverage":4.4,"ITN_Poorest":6.8,"ITN_Richest":2.0,"Wealth_Gap":-4.8,"Region":"South Asia","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Kenya","Country Code":"KEN","Year":2020,"Child_Mortality_Rate":42.8,"ITN_Coverage":42.0,"ITN_Poorest":31.6,"ITN_Richest":45.3,"Wealth_Gap":13.699999999999996,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Cambodia","Country Code":"KHM","Year":2006,"Child_Mortality_Rate":59.8,"ITN_Coverage":4.2,"ITN_Poorest":7.6,"ITN_Richest":0.9,"Wealth_Gap":-6.699999999999999,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Kiribati","Country Code":"KIR","Year":2019,"Child_Mortality_Rate":59.3,"ITN_Coverage":69.2,"ITN_Poorest":90.9,"ITN_Richest":47.6,"Wealth_Gap":-43.3,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Lao PDR","Country Code":"LAO","Year":2017,"Child_Mortality_Rate":48.8,"ITN_Coverage":49.8,"ITN_Poorest":65.4,"ITN_Richest":20.8,"Wealth_Gap":-44.60000000000001,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Liberia","Country Code":"LBR","Year":2020,"Child_Mortality_Rate":79.7,"ITN_Coverage":44.3,"ITN_Poorest":41.2,"ITN_Richest":35.6,"Wealth_Gap":-5.600000000000001,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Sri Lanka","Country Code":"LKA","Year":2016,"Child_Mortality_Rate":8.3,"ITN_Coverage":3.5,"ITN_Poorest":4.8,"ITN_Richest":0.8,"Wealth_Gap":-4.0,"Region":"South Asia","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Madagascar","Country Code":"MDG","Year":2018,"Child_Mortality_Rate":65.8,"ITN_Coverage":62.3,"ITN_Poorest":64.6,"ITN_Richest":55.5,"Wealth_Gap":-9.099999999999994,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Mali","Country Code":"MLI","Year":2018,"Child_Mortality_Rate":106.1,"ITN_Coverage":79.1,"ITN_Poorest":82.8,"ITN_Richest":68.2,"Wealth_Gap":-14.599999999999994,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Myanmar","Country Code":"MMR","Year":2016,"Child_Mortality_Rate":49.5,"ITN_Coverage":18.6,"ITN_Poorest":23.8,"ITN_Richest":10.1,"Wealth_Gap":-13.7,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Mozambique","Country Code":"MOZ","Year":2018,"Child_Mortality_Rate":69.5,"ITN_Coverage":72.7,"ITN_Poorest":71.6,"ITN_Richest":65.8,"Wealth_Gap":-5.799999999999997,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Mauritania","Country Code":"MRT","Year":2015,"Child_Mortality_Rate":48.9,"ITN_Coverage":32.1,"ITN_Poorest":39.6,"ITN_Richest":29.1,"Wealth_Gap":-10.5,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Malawi","Country Code":"MWI","Year":2020,"Child_Mortality_Rate":43.1,"ITN_Coverage":67.9,"ITN_Poorest":64.1,"ITN_Richest":70.3,"Wealth_Gap":6.200000000000003,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Namibia","Country Code":"NAM","Year":2013,"Child_Mortality_Rate":54.0,"ITN_Coverage":5.6,"ITN_Poorest":7.2,"ITN_Richest":3.5,"Wealth_Gap":-3.7,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Niger","Country Code":"NER","Year":2015,"Child_Mortality_Rate":126.3,"ITN_Coverage":95.5,"ITN_Poorest":34.8,"ITN_Richest":33.0,"Wealth_Gap":2.0,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Nigeria","Country Code":"NGA","Year":2018,"Child_Mortality_Rate":120.2,"ITN_Coverage":52.2,"ITN_Poorest":59.9,"ITN_Richest":39.6,"Wealth_Gap":-20.3,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Pakistan","Country Code":"PAK","Year":2018,"Child_Mortality_Rate":68.8,"ITN_Coverage":0.4,"ITN_Poorest":1.2,"ITN_Richest":33.0,"Wealth_Gap":2.0,"Region":"Middle East, North Africa, Afghanistan & Pakistan","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Papua New Guinea","Country Code":"PNG","Year":2018,"Child_Mortality_Rate":47.2,"ITN_Coverage":51.5,"ITN_Poorest":40.5,"ITN_Richest":40.1,"Wealth_Gap":-0.3999999999999986,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Rwanda","Country Code":"RWA","Year":2020,"Child_Mortality_Rate":42.5,"ITN_Coverage":55.5,"ITN_Poorest":36.4,"ITN_Richest":73.2,"Wealth_Gap":36.8,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Sudan","Country Code":"SDN","Year":2006,"Child_Mortality_Rate":84.0,"ITN_Coverage":30.0,"ITN_Poorest":34.8,"ITN_Richest":33.0,"Wealth_Gap":2.0,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Senegal","Country Code":"SEN","Year":2021,"Child_Mortality_Rate":42.5,"ITN_Coverage":46.4,"ITN_Poorest":34.8,"ITN_Richest":33.0,"Wealth_Gap":2.0,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Solomon Islands","Country Code":"SLB","Year":2015,"Child_Mortality_Rate":24.9,"ITN_Coverage":69.6,"ITN_Poorest":69.2,"ITN_Richest":57.9,"Wealth_Gap":-11.300000000000004,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Sierra Leone","Country Code":"SLE","Year":2019,"Child_Mortality_Rate":109.1,"ITN_Coverage":59.1,"ITN_Poorest":59.0,"ITN_Richest":46.3,"Wealth_Gap":-12.700000000000005,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Somalia","Country Code":"SOM","Year":2006,"Child_Mortality_Rate":171.5,"ITN_Coverage":11.4,"ITN_Poorest":2.4,"ITN_Richest":16.5,"Wealth_Gap":14.1,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"South Sudan","Country Code":"SSD","Year":2017,"Child_Mortality_Rate":278.2,"ITN_Coverage":41.7,"ITN_Poorest":39.2,"ITN_Richest":50.2,"Wealth_Gap":11.0,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Sao Tome and Principe","Country Code":"STP","Year":2019,"Child_Mortality_Rate":17.0,"ITN_Coverage":62.6,"ITN_Poorest":60.1,"ITN_Richest":62.5,"Wealth_Gap":2.3999999999999986,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Suriname","Country Code":"SUR","Year":2010,"Child_Mortality_Rate":23.2,"ITN_Coverage":43.4,"ITN_Poorest":43.1,"ITN_Richest":33.0,"Wealth_Gap":2.0,"Region":"Latin America & Caribbean","IncomeGroup":"Upper middle income"},
+            {"Country Name":"Eswatini","Country Code":"SWZ","Year":2010,"Child_Mortality_Rate":81.8,"ITN_Coverage":1.5,"ITN_Poorest":2.6,"ITN_Richest":1.4,"Wealth_Gap":-1.2000000000000002,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Chad","Country Code":"TCD","Year":2019,"Child_Mortality_Rate":114.6,"ITN_Coverage":54.3,"ITN_Poorest":44.7,"ITN_Richest":57.3,"Wealth_Gap":12.599999999999994,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Togo","Country Code":"TGO","Year":2017,"Child_Mortality_Rate":70.9,"ITN_Coverage":60.7,"ITN_Poorest":60.0,"ITN_Richest":52.4,"Wealth_Gap":-7.600000000000001,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Tajikistan","Country Code":"TJK","Year":2005,"Child_Mortality_Rate":52.2,"ITN_Coverage":1.0,"ITN_Poorest":2.0,"ITN_Richest":1.0,"Wealth_Gap":-1.0,"Region":"Europe & Central Asia","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Timor-Leste","Country Code":"TLS","Year":2016,"Child_Mortality_Rate":59.1,"ITN_Coverage":55.4,"ITN_Poorest":49.2,"ITN_Richest":43.9,"Wealth_Gap":-5.300000000000004,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Tanzania","Country Code":"TZA","Year":2017,"Child_Mortality_Rate":50.2,"ITN_Coverage":54.6,"ITN_Poorest":39.9,"ITN_Richest":64.1,"Wealth_Gap":24.2,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Uganda","Country Code":"UGA","Year":2018,"Child_Mortality_Rate":47.4,"ITN_Coverage":60.3,"ITN_Poorest":56.0,"ITN_Richest":62.7,"Wealth_Gap":6.700000000000003,"Region":"Sub-Saharan Africa","IncomeGroup":"Low income"},
+            {"Country Name":"Viet Nam","Country Code":"VNM","Year":2011,"Child_Mortality_Rate":22.8,"ITN_Coverage":9.4,"ITN_Poorest":15.9,"ITN_Richest":5.1,"Wealth_Gap":-10.8,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Vanuatu","Country Code":"VUT","Year":2013,"Child_Mortality_Rate":19.4,"ITN_Coverage":51.0,"ITN_Poorest":67.9,"ITN_Richest":17.1,"Wealth_Gap":-50.8,"Region":"East Asia & Pacific","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Zambia","Country Code":"ZMB","Year":2019,"Child_Mortality_Rate":54.1,"ITN_Coverage":51.6,"ITN_Poorest":55.2,"ITN_Richest":47.9,"Wealth_Gap":-7.300000000000004,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"},
+            {"Country Name":"Zimbabwe","Country Code":"ZWE","Year":2019,"Child_Mortality_Rate":51.1,"ITN_Coverage":14.9,"ITN_Poorest":14.9,"ITN_Richest":9.7,"Wealth_Gap":-5.200000000000001,"Region":"Sub-Saharan Africa","IncomeGroup":"Lower middle income"}
+        ];
+
+        // Utility function to get a consistent color for Income Groups
+        function getIncomeColor(incomeGroup) {
+            switch (incomeGroup) {
+                case 'Low income': return '#ef4444'; // Red
+                case 'Lower middle income': return '#f97316'; // Orange
+                case 'Upper middle income': return '#3b82f6'; // Blue
+                case 'High income': return '#10b981'; // Green/Teal
+                default: return '#6b7280'; // Gray
+            }
+        }
+
+        // --- GLOBAL STATS CALCULATIONS ---
+        const numCountries = RAW_DATA.length;
+        const sumMortality = RAW_DATA.reduce((sum, d) => sum + d.Child_Mortality_Rate, 0);
+        const avgMortality = (sumMortality / numCountries).toFixed(1);
+
+        const sumITNCoverage = RAW_DATA.reduce((sum, d) => sum + d.ITN_Coverage, 0);
+        const avgITNCoverage = (sumITNCoverage / numCountries).toFixed(1);
+
+        const sumITNPoorest = RAW_DATA.reduce((sum, d) => sum + d.ITN_Poorest, 0);
+        const avgPoorestCoverage = (sumITNPoorest / numCountries).toFixed(1);
+
+        const sumITNRichest = RAW_DATA.reduce((sum, d) => sum + d.ITN_Richest, 0);
+        const avgRichestCoverage = (sumITNRichest / numCountries).toFixed(1);
+        
+        const sumAbsWealthGap = RAW_DATA.reduce((sum, d) => sum + Math.abs(d.Wealth_Gap), 0);
+        const avgAbsWealthGap = (sumAbsWealthGap / numCountries).toFixed(1);
+
+        // Update Overview Stats in HTML
+        document.getElementById('stat-countries').textContent = numCountries;
+        document.getElementById('stat-mortality-avg').textContent = avgMortality;
+        document.getElementById('stat-coverage-avg').textContent = `${avgITNCoverage}%`;
+        document.getElementById('stat-gap-abs').textContent = `${avgAbsWealthGap}%`;
+
+        // Update Coverage Insights in HTML
+        document.getElementById('insight-poorest-avg').textContent = `Average coverage: ${avgPoorestCoverage}%`;
+        document.getElementById('insight-richest-avg').textContent = `Average coverage: ${avgRichestCoverage}%`;
+
+        // --- CHART DATA PREPARATION ---
+
+        // 1. Coverage Chart Data - Top 10 by default
+        let coverageDataCountries = [...RAW_DATA]
+            .sort((a, b) => b.ITN_Coverage - a.ITN_Coverage)
+            .slice(0, 10);
+
+        // 2. Correlation Data (ITN_Coverage vs Child_Mortality_Rate)
+        const correlationData = {
+            all: RAW_DATA.map(d => ({
+                x: d.ITN_Coverage,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                incomeGroup: d.IncomeGroup
+            })),
+            'Low income': RAW_DATA.filter(d => d.IncomeGroup === 'Low income').map(d => ({x: d.ITN_Coverage, y: d.Child_Mortality_Rate, color: getIncomeColor(d.IncomeGroup)})),
+            'Lower middle income': RAW_DATA.filter(d => d.IncomeGroup === 'Lower middle income').map(d => ({x: d.ITN_Coverage, y: d.Child_Mortality_Rate, color: getIncomeColor(d.IncomeGroup)})),
+            'Upper middle income': RAW_DATA.filter(d => d.IncomeGroup === 'Upper middle income').map(d => ({x: d.ITN_Coverage, y: d.Child_Mortality_Rate, color: getIncomeColor(d.IncomeGroup)})),
+            'High income': RAW_DATA.filter(d => d.IncomeGroup === 'High income').map(d => ({x: d.ITN_Coverage, y: d.Child_Mortality_Rate, color: getIncomeColor(d.IncomeGroup)})),
+        };
+
+        // 3. Equity Data (Wealth_Gap vs Child_Mortality_Rate) - organized by region
+        const equityDataByRegion = {
+            'all': RAW_DATA.map(d => ({
+                x: d.Wealth_Gap,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                country: d["Country Name"],
+                region: d.Region
+            })),
+            'Sub-Saharan Africa': RAW_DATA.filter(d => d.Region === 'Sub-Saharan Africa').map(d => ({
+                x: d.Wealth_Gap,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                country: d["Country Name"],
+                region: d.Region
+            })),
+            'East Asia & Pacific': RAW_DATA.filter(d => d.Region === 'East Asia & Pacific').map(d => ({
+                x: d.Wealth_Gap,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                country: d["Country Name"],
+                region: d.Region
+            })),
+            'South Asia': RAW_DATA.filter(d => d.Region === 'South Asia').map(d => ({
+                x: d.Wealth_Gap,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                country: d["Country Name"],
+                region: d.Region
+            })),
+            'Middle East, North Africa, Afghanistan & Pakistan': RAW_DATA.filter(d => d.Region === 'Middle East, North Africa, Afghanistan & Pakistan').map(d => ({
+                x: d.Wealth_Gap,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                country: d["Country Name"],
+                region: d.Region
+            })),
+            'Europe & Central Asia': RAW_DATA.filter(d => d.Region === 'Europe & Central Asia').map(d => ({
+                x: d.Wealth_Gap,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                country: d["Country Name"],
+                region: d.Region
+            })),
+            'Latin America & Caribbean': RAW_DATA.filter(d => d.Region === 'Latin America & Caribbean').map(d => ({
+                x: d.Wealth_Gap,
+                y: d.Child_Mortality_Rate,
+                color: getIncomeColor(d.IncomeGroup),
+                country: d["Country Name"],
+                region: d.Region
+            }))
+        };
+
+        // Calculate Pearson correlation coefficient for ITN Coverage vs Mortality
+        function calculateCorrelation(data) {
+            const n = data.length;
+            if (n === 0) return 0;
+
+            const meanX = data.reduce((sum, d) => sum + d.x, 0) / n;
+            const meanY = data.reduce((sum, d) => sum + d.y, 0) / n;
+
+            let numerator = 0;
+            let denominatorX = 0;
+            let denominatorY = 0;
+
+            for (const d of data) {
+                const devX = d.x - meanX;
+                const devY = d.y - meanY;
+                numerator += devX * devY;
+                denominatorX += devX * devX;
+                denominatorY += devY * devY;
+            }
+
+            if (denominatorX === 0 || denominatorY === 0) return 0;
+
+            return (numerator / Math.sqrt(denominatorX * denominatorY)).toFixed(2);
+        }
+
+        const correlationR = calculateCorrelation(correlationData.all);
+        document.getElementById('correlation-r').textContent = correlationR;
+
+        // --- CHART INITIALIZATION ---
+
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Coverage Chart
+        let coverageChart = new Chart(document.getElementById('coverageChart'), {
+            type: 'bar',
+            data: {
+                labels: coverageDataCountries.map(d => d["Country Name"]),
+                datasets: [
+                    {
+                        label: 'Poorest Quintile',
+                        data: coverageDataCountries.map(d => d.ITN_Poorest),
+                        backgroundColor: '#f97316'
+                    },
+                    {
+                        label: 'Richest Quintile',
+                        data: coverageDataCountries.map(d => d.ITN_Richest),
+                        backgroundColor: '#3b82f6'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'ITN Coverage by Economic Status (Top 10 by Coverage)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'ITN Coverage (%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Country'
+                        },
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45,
+                            autoSkip: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update coverage chart based on filter - FIXED TO SHOW ALL LABELS
+        function updateCoverageChart() {
+            const filter = document.getElementById('coverageFilter').value;
+            
+            if (filter === 'all') {
+                coverageDataCountries = [...RAW_DATA].sort((a, b) => b.ITN_Coverage - a.ITN_Coverage);
+            } else {
+                const count = parseInt(filter);
+                coverageDataCountries = [...RAW_DATA]
+                    .sort((a, b) => b.ITN_Coverage - a.ITN_Coverage)
+                    .slice(0, count);
+            }
+
+            coverageChart.data.labels = coverageDataCountries.map(d => d["Country Name"]);
+            coverageChart.data.datasets[0].data = coverageDataCountries.map(d => d.ITN_Poorest);
+            coverageChart.data.datasets[1].data = coverageDataCountries.map(d => d.ITN_Richest);
+            
+            // Update chart title
+            const title = filter === 'all' 
+                ? 'ITN Coverage by Economic Status (All Countries)' 
+                : `ITN Coverage by Economic Status (Top ${filter} by Coverage)`;
+            
+            coverageChart.options.plugins.title.text = title;
+            
+            // Update x-axis configuration for all countries - FIXED TO SHOW ALL LABELS
+            if (filter === 'all') {
+                coverageChart.options.scales.x.ticks = {
+                    maxRotation: 90,
+                    minRotation: 90,
+                    autoSkip: false,
+                    font: {
+                        size: 9
+                    }
+                };
+                document.getElementById('coverageChartContainer').className = 'chart-container-large';
+            } else {
+                coverageChart.options.scales.x.ticks = {
+                    maxRotation: 45,
+                    minRotation: 45,
+                    autoSkip: false
+                };
+                document.getElementById('coverageChartContainer').className = 'chart-container';
+            }
+            
+            coverageChart.update();
+        }
+
+        // Correlation Chart
+        let correlationChart = new Chart(document.getElementById('correlationChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Countries',
+                    data: correlationData.all,
+                    backgroundColor: correlationData.all.map(d => d.color),
+                    pointRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Child Mortality vs ITN Coverage (All Income Groups)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const dataPoint = context.raw;
+                                const country = RAW_DATA.find(d => d.ITN_Coverage === dataPoint.x && d.Child_Mortality_Rate === dataPoint.y);
+                                return country ? `${country["Country Name"]} (${country.IncomeGroup}): ${dataPoint.y.toFixed(1)}` : `Mortality: ${dataPoint.y.toFixed(1)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'ITN Coverage (%)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Child Mortality (per 1,000)'
+                        }
+                    }
+                }
+            }
+        });
+
+        function updateCorrelationChart() {
+            const filter = document.getElementById('incomeFilter').value;
+            let filteredData = correlationData.all;
+            
+            if (filter !== 'all') {
+                filteredData = correlationData[filter];
+            }
+
+            correlationChart.data.datasets[0].data = filteredData;
+            correlationChart.data.datasets[0].backgroundColor = filteredData.map(d => d.color);
+            
+            // Update chart title
+            const title = filter === 'all' 
+                ? 'Child Mortality vs ITN Coverage (All Income Groups)'
+                : `Child Mortality vs ITN Coverage (${filter})`;
+            
+            correlationChart.options.plugins.title.text = title;
+            correlationChart.update();
+        }
+
+        // Equity Chart
+        let equityChart = new Chart(document.getElementById('equityChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Countries',
+                    data: equityDataByRegion.all,
+                    backgroundColor: equityDataByRegion.all.map(d => d.color),
+                    pointRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Wealth Gap vs Child Mortality Rate (All Regions)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const dataPoint = context.raw;
+                                return `${dataPoint.country}: Gap ${dataPoint.x.toFixed(1)}%, Mortality ${dataPoint.y.toFixed(1)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Wealth Gap (Richest - Poorest ITN Coverage) (%)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Child Mortality (per 1,000)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update equity chart based on region filter
+        function updateEquityChart() {
+            const filter = document.getElementById('regionFilter').value;
+            let filteredData = equityDataByRegion.all;
+            
+            if (filter !== 'all') {
+                filteredData = equityDataByRegion[filter];
+            }
+
+            equityChart.data.datasets[0].data = filteredData;
+            equityChart.data.datasets[0].backgroundColor = filteredData.map(d => d.color);
+            
+            // Update chart title
+            const title = filter === 'all' 
+                ? 'Wealth Gap vs Child Mortality Rate (All Regions)'
+                : `Wealth Gap vs Child Mortality Rate (${filter})`;
+            
+            equityChart.options.plugins.title.text = title;
+            equityChart.update();
+        }
+
+        // Feature Importance Chart
+        const featureChart = new Chart(document.getElementById('featureChart'), {
+            type: 'bar',
+            data: {
+                labels: ['ITN Coverage', 'Wealth Gap', 'ITN Poorest', 'Region_SSA', 'ITN Richest'],
+                datasets: [{
+                    label: 'Importance',
+                    data: [0.42, 0.28, 0.15, 0.08, 0.07],
+                    backgroundColor: '#6366f1'
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Random Forest Feature Importance'
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Importance Score'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Calibration Chart
+        const calibrationChart = new Chart(document.getElementById('calibrationChart'), {
+            type: 'bar',
+            data: {
+                labels: ['High income', 'Upper middle', 'Lower middle', 'Low income'],
+                datasets: [{
+                    label: 'Brier Score',
+                    data: [0.1982, 0.1770, 0.1650, 0.1501],
+                    backgroundColor: '#8b5cf6'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Brier Score by Income Group (Lower is Better)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Brier Score: ${context.raw}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Brier Score'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Income Group'
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- MAP INITIALIZATION ---
+        let map, geoLayer;
+
+        function initMap(){
+            // Initialize the map
+            map = L.map('map', { minZoom:2, maxZoom:6 }).setView([0,20], 2);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap & CartoDB'
+            }).addTo(map);
+
+            // Load topojson world atlas
+            fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+                .then(response => response.json())
+                .then(worldData => {
+                    const countries = topojson.feature(worldData, worldData.objects.countries);
+                    
+                    geoLayer = L.geoJSON(countries, {
+                        style: function(feature) {
+                            const countryData = matchRowByFeature(feature);
+                            const mortality = countryData ? countryData.Child_Mortality_Rate : null;
+                            
+                            return {
+                                weight: 0.5,
+                                color: '#fff',
+                                fillOpacity: mortality != null ? 0.8 : 0.25,
+                                fillColor: colorScaleMort(mortality)
+                            };
+                        },
+                        onEachFeature: function(feature, layer) {
+                            const countryData = matchRowByFeature(feature);
+                            const name = countryData ? countryData['Country Name'] : (feature.properties && (feature.properties.name || feature.properties.NAME));
+                            const itn = countryData && isFinite(countryData.ITN_Coverage) ? countryData.ITN_Coverage.toFixed(1)+'%' : 'N/A';
+                            const mort = countryData && isFinite(countryData.Child_Mortality_Rate) ? countryData.Child_Mortality_Rate.toFixed(1)+' per 1,000' : 'N/A';
+                            
+                            layer.bindTooltip(`<strong>${name}</strong><br>ITN: ${itn}<br>Mortality: ${mort}`, {direction:'auto'});
+                            
+                            layer.on('click', function() {
+                                if (countryData) {
+                                    showCountryInfo(countryData);
+                                    try { 
+                                        map.fitBounds(layer.getBounds().pad(0.6)); 
+                                    } catch(e) {
+                                        console.log('Could not fit bounds for', name);
+                                    }
+                                }
+                            });
+                        }
+                    }).addTo(map);
+                })
+                .catch(err => {
+                    console.error('TopoJSON load failed', err);
+                    // Fallback: Show error message on map
+                    document.getElementById('map').innerHTML = '<div style="text-align:center;padding:2rem;color:#666;">Error loading map data. Please check your internet connection.</div>';
+                });
+        }
+
+        function colorScaleMort(v){
+            if (v == null || isNaN(v)) return '#e6eaf6';
+            // YlOrRd-like ramp (approx)
+            if (v < 20) return '#ffffcc';
+            if (v < 40) return '#ffeda0';
+            if (v < 60) return '#feb24c';
+            if (v < 100) return '#f03b20';
+            return '#bd0026';
+        }
+
+        // Improved country matching function with South Sudan fix
+        function matchRowByFeature(feature){
+            const props = feature.properties || {};
+            const name = (props.name || props.NAME || props.ADMIN || '').toLowerCase();
+            const iso = props.iso_a3 || props.iso_a2;
+            
+            // Direct ISO code matching (most reliable)
+            if (iso) {
+                const match = RAW_DATA.find(d => d['Country Code'] === iso);
+                if (match) return match;
+            }
+            
+            // Special case for South Sudan - check multiple possible identifiers
+            if (name.includes('south sudan') || iso === 'SSD' || iso === 'SDS' || 
+                name === 's. sudan' || name === 's sudan') {
+                return RAW_DATA.find(d => d['Country Code'] === 'SSD');
+            }
+            
+            // Make sure Sudan is correctly identified separately
+            if ((name.includes('sudan') && !name.includes('south')) || iso === 'SDN') {
+                return RAW_DATA.find(d => d['Country Code'] === 'SDN');
+            }
+            
+            // Try common name variations
+            const nameVariations = {
+                'democratic republic of the congo': 'Congo, Dem. Rep.',
+                'congo - kinshasa': 'Congo, Dem. Rep.',
+                'republic of the congo': 'Congo, Rep.',
+                'congo - brazzaville': 'Congo, Rep.',
+                'gambia': 'Gambia, The',
+                'laos': 'Lao PDR',
+                'swaziland': 'Eswatini',
+                'east timor': 'Timor-Leste',
+                'myanmar (burma)': 'Myanmar',
+                'côte d\'ivoire': 'Cote d\'Ivoire',
+                'central african rep.': 'Central African Republic',
+                'cote d\'ivoire': 'Cote d\'Ivoire',
+                'ivory coast': 'Cote d\'Ivoire'
+            };
+            
+            if (nameVariations[name]) {
+                return RAW_DATA.find(d => d['Country Name'] === nameVariations[name]);
+            }
+            
+            // Try name exact
+            const matchName = RAW_DATA.find(d => d['Country Name'] && d['Country Name'].toLowerCase() === name);
+            if (matchName) return matchName;
+            
+            // fuzzy: contains
+            const fuzzy = RAW_DATA.find(d => d['Country Name'] && name.includes(d['Country Name'].toLowerCase()));
+            if (fuzzy) return fuzzy;
+            
+            return null;
+        }
+
+        function showCountryInfo(row){
+            document.getElementById('countryInfo').style.display = 'none';
+            document.getElementById('countryDetails').style.display = 'block';
+            
+            document.getElementById('selectedCountryName').textContent = row['Country Name'];
+            document.getElementById('selectedMortality').textContent = `${row.Child_Mortality_Rate.toFixed(1)} per 1,000`;
+            document.getElementById('selectedITN').textContent = `${row.ITN_Coverage.toFixed(1)}% (Poorest: ${row.ITN_Poorest.toFixed(1)}%, Richest: ${row.ITN_Richest.toFixed(1)}%)`;
+            document.getElementById('selectedWealthGap').textContent = `${row.Wealth_Gap.toFixed(1)}%`;
+            document.getElementById('selectedIncome').textContent = row.IncomeGroup;
+            document.getElementById('selectedRegion').textContent = row.Region;
+        }
+
+        // Initialize the map when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+        });
+    </script>
+</body>
+</html>
