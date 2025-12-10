@@ -3,7 +3,7 @@
 <img width="304" height="333" alt="Image" src="https://github.com/user-attachments/assets/b8c55108-c866-4531-8309-f590bc4155e2" />
 
 
-Table of Contents
+## Table of Contents
 
 - Group Members
 
@@ -23,7 +23,7 @@ Table of Contents
 
 - License
 
-Group Members
+## Group Members
 *Name	UT EID	Email*
 
 *Ritesh Penumatsa	rp37458	rp37458@utexas.edu*
@@ -32,13 +32,13 @@ Group Members
 
 *Xinrui Song	xs3979	suszanee@utexas.edu*
 
-Project Overview
+## Project Overview
 
 This project investigates the relationship between Insecticide-Treated Nets (ITNs) and child mortality rates across countries of varying income levels and regions.
 
 <img width="320" height="319" alt="Image" src="https://github.com/user-attachments/assets/c82b4252-5cb8-4e82-a111-5b53a6992275" />
 
-We focused on:
+## We focused on:
 
 - Data cleaning and quality assurance
 
@@ -51,7 +51,7 @@ We focused on:
 Our goal was to determine whether ITN coverage is associated with lower child mortality and how these patterns differ across economic and regional contexts.
 
 
-Updated interpretation:
+## Updated interpretation:
 
 - ITN coverage did not significantly reduce child mortality in the available dataset
 
@@ -62,7 +62,7 @@ Updated interpretation:
 - Removed original claim that ITNs are “the most effective” intervention because no comparison was made with other prevention methods
 
 
-Interactive Dashboard
+## Interactive Dashboard
 
 
 - Global Folium map of child mortality
@@ -81,7 +81,8 @@ Interactive Dashboard
 To view the dashboard, download the file: malaria_dashboard.html and open it up
 
 
-Visualizations
+## Visualizations
+
 
 Below are selected key visuals extracted from the analysis.
 
@@ -95,7 +96,9 @@ Below are selected key visuals extracted from the analysis.
 
 - Brier Score: Subgroup Comparison
 
-Strengths
+
+
+## Strengths
 
 - Built validated economic and health indicators enabling cross-country comparison
 
@@ -112,7 +115,7 @@ Strengths
 - Applied strong data-cleaning practices (range checks, duplicates, dtype validation)
 
 
-Challenges
+## Challenges
 
 - The dataset skewed toward low-income and Sub-Saharan African countries
 
@@ -124,7 +127,10 @@ Challenges
 
 - Hard to extrapolate future patterns due to real-world complexity
 
-Advice for Future Students
+  
+
+## Advice for Future Students
+
 
 - Choose a topic you genuinely care about
 
@@ -136,7 +142,8 @@ Advice for Future Students
 
 - Combine technical analysis with domain understanding
 
-License
+
+### License
 All Rights Reserved
 
 This project is not licensed for reuse.
