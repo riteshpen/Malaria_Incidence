@@ -95,11 +95,11 @@ Despite this, the Random Forest model assigns 42% importance to ITN coverage, in
 
 The descriptive statistics reinforce this complexity:
 
-Child mortality ranges widely (from 8.3 in Sri Lanka to 278.2 in South Sudan).
+- Child mortality ranges widely (from 8.3 in Sri Lanka to 278.2 in South Sudan).
 
-ITN coverage varies dramatically by country, with some extreme wealth gaps both favoring the rich and the poor.
+- ITN coverage varies dramatically by country, with some extreme wealth gaps both favoring the rich and the poor.
 
-Overall accuracy (82%) and a Brier Score of 0.176 indicate the model performs reasonably well but still reflects significant uncertainty.
+- Overall accuracy (82%) and a Brier Score of 0.176 indicate the model performs reasonably well but still reflects significant uncertainty.
 
 Overall, these results imply that prevention measures like ITN distribution cannot independently drive reductions in child mortality. The relationship is multifactorial, and effective policy interventions must account for the broader social and economic environment influencing health outcomes.
 
