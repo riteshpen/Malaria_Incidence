@@ -26,7 +26,12 @@ We hypothesize that higher access to prevention measures is associated with lowe
 
 1. df_latest_by_country.csv is the dataset we used for our final evaluation, analysis, and dashboard.
 2. We merged both datasets and selected the most recent data entry for every country. 
-3. After doing that, we got the df_latest_by_country.csv file. 
+3. After doing that, we got the df_latest_by_country.csv file.
+
+
+### Key Variables
+
+<img width="611" height="655" alt="Image" src="https://github.com/user-attachments/assets/f04c4a6b-6901-4474-a2c0-7b3157f61ddf" />
 
 ## Table of Contents
 
