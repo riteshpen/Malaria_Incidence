@@ -7,17 +7,6 @@ Preventive measures, such as insecticide-treated bed nets (ITNs) and indoor resi
 This project examines whether more access to these measures correlates with lower child mortality across countries. 
 Additionally, we aim to examine changes in malaria-related cases over time to determine whether the prevalence of malaria is decreasing, stable, or showing spikes in recent years.
 
-### What datasets did we use?
-
-1. UNICEF Malaria & Child Health Dataset (https://data.unicef.org/resources/dataset/malaria/)
-2. World Bank Under-5 Mortality Data (https://data.worldbank.org/indicator/SH.DYN.MORT?)
-3. World Bank Incidence of Malaria (https://data.worldbank.org/indicator/SH.MLR.INCD.P3?name_desc=true)
-
-### What is df_latest_by_country.csv, and how did we get it? 
-
-1. df_latest_by_country.csv is the dataset we used for our final evaluation, analysis, and dashboard.
-2. We merged both datasets and selected the most recent data entry for every country. 
-3. After doing that, we got the df_latest_by_country.csv file. 
 
 ## Table of Contents
 
@@ -53,6 +42,18 @@ Additionally, we aim to examine changes in malaria-related cases over time to de
 This project investigates the relationship between Insecticide-Treated Nets (ITNs) and child mortality rates across countries of varying income levels and regions.
 
 <img width="320" height="319" alt="Image" src="https://github.com/user-attachments/assets/c82b4252-5cb8-4e82-a111-5b53a6992275" />
+
+### What datasets did we use?
+
+1. UNICEF Malaria & Child Health Dataset (https://data.unicef.org/resources/dataset/malaria/)
+2. World Bank Under-5 Mortality Data (https://data.worldbank.org/indicator/SH.DYN.MORT?)
+3. World Bank Incidence of Malaria (https://data.worldbank.org/indicator/SH.MLR.INCD.P3?name_desc=true)
+
+### What is df_latest_by_country.csv, and how did we get it? 
+
+1. df_latest_by_country.csv is the dataset we used for our final evaluation, analysis, and dashboard.
+2. We merged both datasets and selected the most recent data entry for every country. 
+3. After doing that, we got the df_latest_by_country.csv file. 
 
 ## We focused on:
 
