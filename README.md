@@ -34,6 +34,8 @@ Project Overview
 
 This project investigates the relationship between Insecticide-Treated Nets (ITNs) and child mortality rates across countries of varying income levels and regions.
 
+<img width="320" height="319" alt="Image" src="https://github.com/user-attachments/assets/c82b4252-5cb8-4e82-a111-5b53a6992275" />
+
 We focused on:
 
 Data cleaning and quality assurance
