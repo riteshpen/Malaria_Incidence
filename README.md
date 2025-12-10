@@ -108,15 +108,15 @@ To view the dashboard, download the file: malaria_dashboard.html and open it up
 
 Below are selected key visuals extracted from the analysis.
 
-### World Mortality Map (Folium)
+### World Mortality Map 
 
 <img width="490" height="372" alt="Image" src="https://github.com/user-attachments/assets/d3138ec8-23a7-4844-ad81-5913f774da00" />
 
-### ITN Coverage vs. Child Mortality (Plotly)
+### ITN Coverage vs. Child Mortality
 
 <img width="886" height="424" alt="Image" src="https://github.com/user-attachments/assets/7d2041fb-d2ad-4eba-afd3-75ef4d39d902" />
 
-### ITN Coverage by Wealth Group (Stacked Bar Chart)
+### ITN Coverage by Wealth Group
 
 <img width="888" height="382" alt="Image" src="https://github.com/user-attachments/assets/84768fa1-a503-432f-a44d-ce447226a519" />
 
