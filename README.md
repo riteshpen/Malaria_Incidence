@@ -71,15 +71,21 @@ We hypothesize that higher access to prevention measures is associated with lowe
 
 - Subgroup fairness evaluation using Brier Scores
 
+## Analysis
+- Calculated correlation between ITN coverage and child mortality: r = 0.13 (Weak Positive).
+- 63 countries analyzed, spanning multiple regions and income groups.
+- The highest child mortality rate is 278.2 (South Sudan), lowest is 8.3 (Sri Lanka).
+- Average coverage for the poorest quintile is 39.8%, slightly higher than the richest quintile's 39.0%.
+- The highest overall coverage is 93.6% (Guinea-Bissau), 95.5% (Niger), and 79.1% (Mali).
+- The lowest overall coverage is 0.4% (Pakistan), 1% (Tajikistan), and 1% (Azerbaijan).
 
-
-## Updated interpretation:
+## Interpretation:
 
 - ITN coverage did not significantly reduce child mortality in the available dataset
 
 - Poorest and Richest households showed similar ITN coverage levels
 
-- Reduced dataset size from 251 → 63 rows by using only the most recent year per country
+- 63 countries 
 
 - Removed original claim that ITNs are “the most effective” intervention because no comparison was made with other prevention methods
 
