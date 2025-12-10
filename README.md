@@ -108,17 +108,22 @@ To view the dashboard, download the file: malaria_dashboard.html and open it up
 
 Below are selected key visuals extracted from the analysis.
 
-- World Mortality Map
+### World Mortality Map
 
-- ITN Coverage vs. Child Mortality (Plotly)
+<img width="490" height="372" alt="Image" src="https://github.com/user-attachments/assets/d3138ec8-23a7-4844-ad81-5913f774da00" />
 
-- ITN Coverage by Wealth Group (Stacked Bar Chart)
+### ITN Coverage vs. Child Mortality (Plotly)
 
-- Random Forest Feature Importance
+<img width="886" height="424" alt="Image" src="https://github.com/user-attachments/assets/7d2041fb-d2ad-4eba-afd3-75ef4d39d902" />
 
-- Brier Score: Subgroup Comparison
+### ITN Coverage by Wealth Group (Stacked Bar Chart)
 
+<img width="888" height="382" alt="Image" src="https://github.com/user-attachments/assets/84768fa1-a503-432f-a44d-ce447226a519" />
 
+### Random Forest Feature Importance and Brier Score: Subgroup Comparison
+
+<img width="882" height="436" alt="Image" src="https://github.com/user-attachments/assets/f1af12a1-b973-4d21-b4be-19e62a103bc6" />
+<img width="879" height="344" alt="Image" src="https://github.com/user-attachments/assets/5848ace2-d3e5-4792-a320-886baa59397d" />
 
 ## Strengths
 
