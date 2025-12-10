@@ -1,0 +1,22 @@
+# Notebook Structure Overview
+
+This .ipynb file is organized into a logical workflow that walks through the full pipeline of the project—from raw data loading to final model evaluation. The main sections include:
+
+## Dataset Loading
+The notebook begins by importing all required files, including mortality data, ITN coverage datasets, metadata, and any supplemental CSVs. This section also installs necessary packages (e.g., openpyxl).
+
+## Data Cleaning & Preparation
+After loading the data, the notebook performs cleaning steps such as merging datasets, handling missing values, filtering country-year combinations, and generating the final merged DataFrame (df_final).
+A snapshot of the dataset and basic summaries are displayed.
+
+## Basic Visualizations
+This section introduces initial visuals used to understand the data, including world maps and scatterplots. These help contextualize child mortality levels and examine ITN coverage relationships.
+
+## Feature Engineering & Modeling
+The notebook prepares inputs for modeling, runs the Random Forest classifier, and examines feature importance (especially the importance of ITN coverage).
+
+## Evaluation Metrics
+Key evaluation outputs—accuracy, Brier Score, confusion matrix, and feature importance—are generated and summarized.
+
+## Final Data Export
+The cleaned dataset (df_final_by_country.csv) is exported for dashboard use and final analysis.
