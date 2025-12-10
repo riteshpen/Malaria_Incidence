@@ -3,32 +3,32 @@
 
 Table of Contents
 
+- Group Members
+
+- Project Overview
+
+- Key Changes From Original Analysis
+
+- Interactive Dashboard
+
+- Visualizations
+
+- Strengths
+
+- Challenges
+
+- Advice for Future Students
+
+- License
+
 Group Members
+*Name	UT EID	Email*
 
-Project Overview
+*Ritesh Penumatsa	rp37458	rp37458@utexas.edu*
 
-Key Changes From Original Analysis
+*Lucy Schilling	lms5598	lucy.schilling@utexas.edu*
 
-Interactive Dashboard
-
-Visualizations
-
-Strengths
-
-Challenges
-
-Advice for Future Students
-
-License
-
-Group Members
-Name	UT EID	Email
-
-Ritesh Penumatsa	rp37458	rp37458@utexas.edu
-
-Lucy Schilling	lms5598	lucy.schilling@utexas.edu
-
-Xinrui Song	xs3979	suszanee@utexas.edu
+*Xinrui Song	xs3979	suszanee@utexas.edu*
 
 Project Overview
 
@@ -38,103 +38,101 @@ This project investigates the relationship between Insecticide-Treated Nets (ITN
 
 We focused on:
 
-Data cleaning and quality assurance
+- Data cleaning and quality assurance
 
-Interactive geographic and statistical visualizations
+- Interactive geographic and statistical visualizations
 
-Random Forest modeling
+- Random Forest modeling
 
-Subgroup fairness evaluation using Brier Scores
+- Subgroup fairness evaluation using Brier Scores
 
 Our goal was to determine whether ITN coverage is associated with lower child mortality and how these patterns differ across economic and regional contexts.
 
-Key Changes From Original Analysis
-
-Used only a Random Forest model instead of four ML models
 
 Updated interpretation:
 
-ITN coverage did not significantly reduce child mortality in the available dataset
+- ITN coverage did not significantly reduce child mortality in the available dataset
 
-Poorest and richest households showed similar ITN coverage levels
+- Poorest and Richest households showed similar ITN coverage levels
 
-Reduced dataset size from 251 → 63 rows by using only the most recent year per country
+- Reduced dataset size from 251 → 63 rows by using only the most recent year per country
 
-Removed original claim that ITNs are “the most effective” intervention because no comparison was made with other prevention methods
+- Removed original claim that ITNs are “the most effective” intervention because no comparison was made with other prevention methods
+
 
 Interactive Dashboard
 
-The interactive dashboard includes:
 
-Global Folium map of child mortality
+- Global Folium map of child mortality
 
-Choropleth shading by mortality rate
+- Choropleth shading by mortality rate
 
-Clickable markers showing ITN coverage and country context
+- Clickable markers showing ITN coverage and country context
 
-Linked-brushing scatterplots (Altair)
+- Linked-brushing scatterplots (Altair)
 
-Income-group filters
+- Income-group filters
 
-Region-level comparisons
+- Region-level comparisons
 
-To view the dashboard, open the file:
 
-malaria_dashboard.html
+To view the dashboard, download the file: malaria_dashboard.html and open it up
+
 
 Visualizations
 
 Below are selected key visuals extracted from the analysis.
 
-World Mortality Map
+- World Mortality Map
 
-ITN Coverage vs. Child Mortality (Plotly)
+- ITN Coverage vs. Child Mortality (Plotly)
 
-ITN Coverage by Wealth Group (Stacked Bar Chart)
+- ITN Coverage by Wealth Group (Stacked Bar Chart)
 
-Random Forest Feature Importance
+- Random Forest Feature Importance
 
-Brier Score: Subgroup Comparison
+- Brier Score: Subgroup Comparison
 
 Strengths
 
-Built validated economic and health indicators enabling cross-country comparison
+- Built validated economic and health indicators enabling cross-country comparison
 
-Identified meaningful disparities and trends across regions and income levels
+- Identified meaningful disparities and trends across regions and income levels
 
-Created intuitive, interactive visualizations for deeper exploration
+- Created intuitive, interactive visualizations for deeper exploration
 
-Used ML (Random Forest) to extract feature importance and predictive insights
+- Used ML (Random Forest) to extract feature importance and predictive insights
 
-Evaluated model fairness with subgroup-level Brier Scores
+- Evaluated model fairness with subgroup-level Brier Scores
 
-Communicated results clearly to both technical and non-technical audiences
+- Communicated results clearly to both technical and non-technical audiences
 
-Applied strong data-cleaning practices (range checks, duplicates, dtype validation)
+- Applied strong data-cleaning practices (range checks, duplicates, dtype validation)
+
 
 Challenges
 
-Dataset skewed toward low-income and Sub-Saharan African countries
+- The dataset skewed toward low-income and Sub-Saharan African countries
 
-Limited data for high-income countries weakened generalizability
+- Limited data for high-income countries weakened generalizability
 
-Narrow scope (only ITNs examined) restricted broader conclusions
+- Narrow scope (only ITNs examined) restricted broader conclusions
 
-Small dataset reduced model prediction reliability
+- Small dataset reduced model prediction reliability
 
-Hard to extrapolate future patterns due to real-world complexity
+- Hard to extrapolate future patterns due to real-world complexity
 
 Advice for Future Students
 
-Choose a topic you genuinely care about
+- Choose a topic you genuinely care about
 
-Start early, especially with visualizations and data cleaning
+- Start early, especially with visualizations and data cleaning
 
-Secure a reliable dataset as soon as possible
+- Secure a reliable dataset as soon as possible
 
-Ask deeper “why” questions beyond basic trends
+- Ask deeper “why” questions beyond basic trends
 
-Combine technical analysis with domain understanding
+- Combine technical analysis with domain understanding
 
 License
 All Rights Reserved
