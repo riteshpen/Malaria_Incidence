@@ -1,6 +1,7 @@
-**The Impact of Malaria Prevention Measures on Child Mortality**
+# **The Impact of Malaria Prevention Measures on Child Mortality**
 
 <img width="304" height="333" alt="Image" src="https://github.com/user-attachments/assets/b8c55108-c866-4531-8309-f590bc4155e2" />
+
 
 Table of Contents
 
