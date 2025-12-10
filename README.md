@@ -143,7 +143,7 @@ Below are selected key visuals extracted from the analysis.
 - Combine technical analysis with domain understanding
 
 
-### License
+## License
 All Rights Reserved
 
 This project is not licensed for reuse.
