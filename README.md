@@ -106,8 +106,9 @@ Discrete Values for Categorical Variables
 - Region-level comparisons
 
 
-To view the dashboard, download the file: malaria_dashboard.html and open it up
-
+To view the dashboard, download the file from the GitHub Dashboard folder: malaria_dashboard.html, and open it up
+OR
+[Click Here](https://github.com/user-attachments/files/24095190/malaria__dashboard.html)
 
 ## Visualization Tools
 
