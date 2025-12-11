@@ -112,8 +112,11 @@ To view the dashboard, download the file: malaria_dashboard.html and open it up
 ## Visualization Tools
 
 - Folium: For geospatial visualizations, emphasizing ITN coverage, malaria-related cases, and child mortality across regions or countries. Folium supports interactive maps with hover popups and color-coded regions. Ideal for highlighting geographic disparities in malaria prevention and outcomes.
+
 - Plotly: Great for interactive charts and dashboards by allowing hovering, paning, filtering, and clicking on data points. It can help highlight relationships between ITN usage, child mortality, and wealth, as well as time-series trends across regions. 
+
 - Altair: Altair is especially important for comparing ITN coverage vs. child mortality across economic groups through linked brushing and interactive visuals. Its grammar of graphics approach makes it optimal to layer multiple datasets and interactions while maintaining clean designs.
+
 - Matplotlib/Seaborn: For static, high-quality visuals, such as boxplots, histograms, etc. These are useful for initial data exploration and providing contextual insights, like summarizing how child mortality varies by ITN coverage or economic groups. The plots can be annotated to make the visualization clear and interpretable. 
 
 ## Visualizations
@@ -141,9 +144,13 @@ Below are selected key visuals extracted from the analysis.
 ## Visual Layout
 
 - ITN Distribution Reduces Malaria Transmission: A choropleth map using Folium will visually show countries with their ITN coverage in relation to their malaria transmission. There will be a map of all areas where red indicates higher ITN coverage and light yellow indicates less coverage. Hover tooltips over the markers will show additional information such as child mortality rates, coverage, and descriptive economic statistics. In addition to hovering, there will be zooming and panning. Overall, the visual will be a world map with all countries filled with a corresponding color, information when hovering, and a color-coded legend showing the ITN coverage.  
+
 - Child Mortality Declines with ITN Use: An interactive scatterplot on Plotly will show the relationship between child mortality rates and ITN usage. ITN coverage will be plotted on the x-axis, child mortality rates will be charted on the y-axis, and upon hovering or clicking on the points, additional statistics, such as income group, country, and wealth gap, will be displayed. Additional interactions include panning and filtering data. The color scheme is based on income groups: red (Low Income), green (Lower Middle Income), and purple (Upper Middle Income), with a color-coded legend on income groups.
-Economic Disparities Affect ITN Access: An Altair stacked bar chart with economic status on the x-axis and ITN use on the y-axis will show the relationship between economic status and prevention. Upon hovering over a bar, further information about child mortality rates, income status, ITN coverage, and the country will be displayed, with blue representing where ITN coverage corresponds to a poor household and yellow where ITN coverage corresponds to a rich household. The legend is color-coded by economic status. 
+
+- Economic Disparities Affect ITN Access: An Altair stacked bar chart with economic status on the x-axis and ITN use on the y-axis will show the relationship between economic status and prevention. Upon hovering over a bar, further information about child mortality rates, income status, ITN coverage, and the country will be displayed, with blue representing where ITN coverage corresponds to a poor household and yellow where ITN coverage corresponds to a rich household. The legend is color-coded by economic status. 
+
 - Equitable Distribution is Key for Impact: Using Altair linked brushing scatterplots, side-by-side plots will be used to compare the effect of poorer populations on child mortality rates. Both plots will have the child mortality rate on the y-axis, with one graph showing ITN coverage of the poorest areas and the other showing the wealth gap. Using the brushing feature, specific data points can be compared between the two plots. Upon hovering over the points, further information can be displayed, such as country, income group, etc. The plots will be different colors for different regions of the world (Sub-Saharan, Middle East, etc), and the regions are color-coded in the legend. 
+
 - Wealth Gaps Influence Child Mortality: Using Matplotlib, plot a scatterplot with wealth gap on the x-axis and child mortality rates on the y-axis, coloring points by income groups to show differences across economic levels. Each point represents a country with a clear legend, and the title provides context along with semi-transparent points to improve readability. This layout highlights that countries with larger wealth disparities tend to have higher child mortality rates. The legend is color-coded by income group: red (high income), blue (upper middle income), green (lower middle income), and yellow (low income).
 
 ### What and why we used Random Forest?
@@ -203,11 +210,17 @@ We want to make sure the betnets are being targeted towards lower-income househo
 
 ## Interpretation
 
-ITN Distribution Reduces Malaria Transmission: Households using ITNs have lower exposure to mosquitoes carrying malaria, directly reducing infection rates among children.
-Child Mortality Declines with ITN Use: Areas with higher ITN coverage indicate measurable reductions in malaria-related child deaths, indicating the effectiveness of this prevention method.
-Economic Disparities Affect ITN Access: Wealthier households are not more likely to use ITNs, despite poorer households often facing challenges such as high costs, limited availability, or insufficient education.
-Equitable Distribution is Key for Impact: To decrease child mortality rates, ITN programs must reach poor and marginalized communities, ensuring that all children benefit regardless of socioeconomic status.
-Wealth Gaps Influence Child Mortality: Countries with larger wealth disparities tend to have higher child mortality rates, emphasizing the need to address economic inequalities alongside malaria prevention efforts.
+- ITN Distribution and Malaria Exposure: Increased household ITN use generally reduces exposure to malaria-carrying mosquitoes, lowering infection risk for children. However, the impact is not uniform—regional variation within countries can significantly influence effectiveness.
+
+- Child Mortality and ITN Coverage: Higher ITN coverage does not consistently translate into measurable reductions in malaria-related child deaths. This may reflect Simpson’s Paradox: when data are segmented by income groups, each subgroup shows a different trend, which makes the overall relationship appear misleading or weaker than it actually is.
+
+- Economic Disparities in ITN Access: Wealthier households do not reliably use ITNs more often than poorer households. Lower-income families may face barriers such as cost, limited distribution networks, or lack of awareness, all of which reduce effective coverage.
+
+- Equitable Distribution Matters Most: Reducing child mortality requires ensuring that ITN programs reach the poorest and most marginalized communities. Broad coverage alone is insufficient—impact depends on equitable access and consistent use across all socioeconomic groups.
+
+- Wealth Gaps and Child Mortality: Countries with larger wealth inequalities tend to have higher child mortality rates overall, highlighting the importance of addressing structural economic disparities alongside malaria interventions.
+
+- Model Calibration Insights: In our predictive model, ITN coverage emerged as the most influential feature for child mortality. Among income categories, the low-income group achieved the best calibration (lowest Brier Score), indicating that the model predicts outcomes most accurately for this subgroup.
 
 ## Conclusion
 
