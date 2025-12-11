@@ -28,6 +28,24 @@ We hypothesize that higher access to prevention measures is associated with lowe
 2. We merged both datasets and selected the most recent data entry for every country. 
 3. After doing that, we got the df_latest_by_country.csv file.
 
+### Description of our dataset
+
+*Column Names: Country Name, Country Code, Year, Child Mortality Rates, ITN Coverage, ITN Poorest, ITN Richest, Wealth Gap, Region, Income Group*
+
+
+Classification of Column
+- Categorical: Country Name, Country Code, Region
+- Ordinal: Income Group (Low, Lower middle, Upper middle, High)
+- Discrete: Year, Wealth Gap
+- Continuous: Child Mortality Rates, ITN Coverage, ITN Poorest, ITN Richest
+
+
+Discrete Values for Categorical Variables
+- Income Group: 4 unique ordered groups [Low income, Lower middle income, Upper middle income, High income]
+- Country Name/Code: 251 unique entries (e.g., India / IND, Rwanda / RWA)
+- Region: 7 unique regions [South Asia, Europe & Central Asia, Middle East & North Africa, Sub-Saharan Africa, Latin America & Caribbean, East Asia & Pacific, North America]
+
+
 
 <img width="611" height="655" alt="Image" src="https://github.com/user-attachments/assets/f04c4a6b-6901-4474-a2c0-7b3157f61ddf" />
 
