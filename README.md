@@ -128,7 +128,7 @@ Economic Disparities Affect ITN Access: An Altair stacked bar chart with economi
 - Equitable Distribution is Key for Impact: Using Altair linked brushing scatterplots, side-by-side plots will be used to compare the effect of poorer populations on child mortality rates. Both plots will have the child mortality rate on the y-axis, with one graph showing ITN coverage of the poorest areas and the other showing the wealth gap. Using the brushing feature, specific data points can be compared between the two plots. Upon hovering over the points, further information can be displayed, such as country, income group, etc. The plots will be different colors for different regions of the world (Sub-Saharan, Middle East, etc), and the regions are color-coded in the legend. 
 - Wealth Gaps Influence Child Mortality: Using Matplotlib, plot a scatterplot with wealth gap on the x-axis and child mortality rates on the y-axis, coloring points by income groups to show differences across economic levels. Each point represents a country with a clear legend, and the title provides context along with semi-transparent points to improve readability. This layout highlights that countries with larger wealth disparities tend to have higher child mortality rates. The legend is color-coded by income group: red (high income), blue (upper middle income), green (lower middle income), and yellow (low income).
 
-### What/why we used Random Forest?
+### What and why we used Random Forest?
 
 A tree-based bagging ensemble model that captures non-linear relationships between ITN usage, economic disparities, and child mortality.
 This model is well-suited for handling interactions among variables and reducing overfitting through averaging across multiple decision trees. 
@@ -183,7 +183,15 @@ We want to make sure the betnets are being targeted towards lower-income househo
 - The overall Brier Score is 0.176.
 - The ITN coverage importance is 42%.
 
-## Interpretation:
+## Interpretation
+
+ITN Distribution Reduces Malaria Transmission: Households using ITNs have lower exposure to mosquitoes carrying malaria, directly reducing infection rates among children.
+Child Mortality Declines with ITN Use: Areas with higher ITN coverage indicate measurable reductions in malaria-related child deaths, indicating the effectiveness of this prevention method.
+Economic Disparities Affect ITN Access: Wealthier households are not more likely to use ITNs, despite poorer households often facing challenges such as high costs, limited availability, or insufficient education.
+Equitable Distribution is Key for Impact: To decrease child mortality rates, ITN programs must reach poor and marginalized communities, ensuring that all children benefit regardless of socioeconomic status.
+Wealth Gaps Influence Child Mortality: Countries with larger wealth disparities tend to have higher child mortality rates, emphasizing the need to address economic inequalities alongside malaria prevention efforts.
+
+## Conclusion
 
 The statistical evidence suggests that increased ITN (insecticide-treated net) coverage does not have a strong or direct relationship with reducing child mortality across the 63 countries analyzed. The correlation between ITN coverage and child mortality is weak (r = 0.13) and not statistically significant (p = 0.32), meaning the data do not support a meaningful linear relationship.
 
